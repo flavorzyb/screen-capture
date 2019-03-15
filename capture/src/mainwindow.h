@@ -2,14 +2,22 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWidget>
+#include <QPushButton>
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = 0);
+    MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private:
+    void initUI();
+private:
+    QWidget *mainWidget = nullptr;
+    QPushButton * btnCapture = nullptr;
 };
 
 #endif // MAINWINDOW_H
