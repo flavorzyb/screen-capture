@@ -7,6 +7,7 @@
 #include <QTime>
 #include <QClipboard>
 #include <QMessageBox>
+#include <QScreen>
 #include "mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
       btnCapture(nullptr)
 {
     initUI();
+    addEvents();
 }
 
 void MainWindow::initUI() {
@@ -38,4 +40,27 @@ void MainWindow::initUI() {
 
 MainWindow::~MainWindow()
 {
+    removeEvents();
+}
+
+void MainWindow::addEvents() {
+    connect(btnCapture, SIGNAL(pressed()), this, SLOT(onClickCapture()));
+}
+
+void MainWindow::removeEvents() {
+    disconnect(btnCapture, SIGNAL(pressed()), this, SLOT(onClickCapture()));
+}
+
+void MainWindow::onClickCapture() {
+    QDesktopWidget * desktop = QApplication::desktop();
+    int currenMonitor = desktop->screenNumber(this);
+    QRect rect = desktop->screenGeometry(currenMonitor);
+    QScreen * screen = QGuiApplication::primaryScreen();
+    bool result = screen->grabWindow(desktop->winId(), rect.x(), rect.y(), rect.width(), rect.height()).save("/Users/flavor/tmp/001.jpg");
+    printf("onClickCapture=======%d\n", result);
+    printf("currenMonitor=====%d\n", currenMonitor);
+    printf("width: %d, height:%d\n", rect.width(), rect.height());
+
+    // width: 1680, height:1050 大屏幕
+    // width: 1280, height:800 mac book pro
 }

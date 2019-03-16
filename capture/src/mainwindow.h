@@ -15,6 +15,12 @@ public:
 
 private:
     void initUI();
+    void addEvents();
+    void removeEvents();
+
+private slots:
+    void onClickCapture();
+
 private:
     QWidget *mainWidget = nullptr;
     QPushButton * btnCapture = nullptr;
