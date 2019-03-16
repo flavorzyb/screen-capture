@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QWidget>
 #include <QPushButton>
+#include <QAction>
 
 class MainWindow : public QMainWindow
 {
@@ -24,6 +25,7 @@ private slots:
 private:
     QWidget *mainWidget = nullptr;
     QPushButton * btnCapture = nullptr;
+    QAction * action = nullptr;
 };
 
 #endif // MAINWINDOW_H
