@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         $$PWD/src/main.cpp \
-        $$PWD/src/mainwindow.cpp
+        $$PWD/src/mainwindow.cpp \
+        $$PWD/src/screenwindow.cpp
 
 HEADERS += \
-        $$PWD/src/mainwindow.h
+        $$PWD/src/mainwindow.h \
+        $$PWD/src/screenwindow.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

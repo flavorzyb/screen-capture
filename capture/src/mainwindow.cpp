@@ -9,7 +9,9 @@
 #include <QMessageBox>
 #include <QKeySequence>
 #include <QScreen>
+#include <QList>
 #include "mainwindow.h"
+#include "screenwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -24,7 +26,7 @@ void MainWindow::initUI() {
     mainWidget = new QWidget;
     setCentralWidget(mainWidget);
     setWindowTitle(tr("截屏工具"));
-    setMinimumSize(200, 100);
+    setMinimumSize(400, 300);
 
     btnCapture = new QPushButton;
     btnCapture->setText(tr("开始截屏"));
@@ -33,7 +35,7 @@ void MainWindow::initUI() {
 
     QVBoxLayout * mainLayout = new QVBoxLayout;
     mainLayout->addWidget(btnCapture);
-    mainLayout->setContentsMargins(20, 20, 20, 20);
+    mainLayout->setContentsMargins(120, 120, 120, 120);
     mainLayout->setSpacing(20);
 
     action = new QAction(this);
@@ -60,12 +62,23 @@ void MainWindow::removeEvents() {
 }
 
 void MainWindow::onClickCapture() {
+    QList<QScreen *> screenList = QGuiApplication::screens();
     QDesktopWidget * desktop = QApplication::desktop();
-    int currenMonitor = desktop->screenNumber(this);
-    QRect rect = desktop->screenGeometry(currenMonitor);
-    QScreen * screen = QGuiApplication::primaryScreen();
-    bool result = screen->grabWindow(desktop->winId(), rect.x(), rect.y(), rect.width(), rect.height()).save("/Users/flavor/tmp/001.jpg");
-    printf("onClickCapture=======%d\n", result);
+    for (int i = 0; i< desktop->screenCount(); i++) {
+        QWidget * screen = desktop->screen(i);
+        QRect rect = desktop->screenGeometry(i);
+        QWidget * childWin = new QWidget(screen);
+        childWin->setMinimumSize(rect.width(), rect.height());
+        childWin->setGeometry(desktop->screenGeometry(i));
+        childWin->showFullScreen();
+        //childWin->show();
+    }
+
+//    int currenMonitor = desktop->screenNumber(this);
+//    QRect rect = desktop->screenGeometry(currenMonitor);
+//    QScreen * screen = QGuiApplication::primaryScreen();
+//    bool result = screen->grabWindow(desktop->winId(), rect.x(), rect.y(), rect.width(), rect.height()).save("/Users/flavor/tmp/001.jpg");
+//    printf("onClickCapture=======%d\n", result);
 
     // width: 1680, height:1050 大屏幕
     // width: 1280, height:800 mac book pro
