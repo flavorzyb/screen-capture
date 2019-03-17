@@ -62,24 +62,9 @@ void MainWindow::removeEvents() {
 }
 
 void MainWindow::onClickCapture() {
-    QList<QScreen *> screenList = QGuiApplication::screens();
     QDesktopWidget * desktop = QApplication::desktop();
     for (int i = 0; i< desktop->screenCount(); i++) {
-        QWidget * screen = desktop->screen(i);
-        QRect rect = desktop->screenGeometry(i);
-        QWidget * childWin = new QWidget(screen);
-        childWin->setMinimumSize(rect.width(), rect.height());
-        childWin->setGeometry(desktop->screenGeometry(i));
-        childWin->showFullScreen();
-        //childWin->show();
+        ScreenWindow * chidWin = new ScreenWindow(i);
+        chidWin->showFullScreen();
     }
-
-//    int currenMonitor = desktop->screenNumber(this);
-//    QRect rect = desktop->screenGeometry(currenMonitor);
-//    QScreen * screen = QGuiApplication::primaryScreen();
-//    bool result = screen->grabWindow(desktop->winId(), rect.x(), rect.y(), rect.width(), rect.height()).save("/Users/flavor/tmp/001.jpg");
-//    printf("onClickCapture=======%d\n", result);
-
-    // width: 1680, height:1050 大屏幕
-    // width: 1280, height:800 mac book pro
 }

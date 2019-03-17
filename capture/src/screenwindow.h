@@ -1,17 +1,17 @@
 #ifndef SCREENWINDOW_H
 #define SCREENWINDOW_H
 
-#include <QWindow>
-#include <QScreen>
+#include <QWidget>
+#include <QRect>
 
-class ScreenWindow: QWindow
+class ScreenWindow: public QWidget
 {
 public:
-    ScreenWindow(QScreen *targetScreen = nullptr);
+    ScreenWindow(int screen);
     ~ScreenWindow();
 
 private:
-    void initUI();
+    void initUI(int screen);
 };
 
 #endif // SCREENWINDOW_H
