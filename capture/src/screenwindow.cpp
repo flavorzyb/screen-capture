@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QPixmap>
+#include <QPainter>
 #include "screenwindow.h"
 
 
@@ -30,11 +31,10 @@ void ScreenWindow::initUI(int screen)
     setGeometry(rect);
 
     QScreen * pScreen = QGuiApplication::primaryScreen();
-    QPixmap pixmap = pScreen->grabWindow(pDesktop->winId(), rect.x(), rect.y(), rect.width(), rect.height());
-    QString fileName = "/Users/flavor/tmp/screen_";
-    char str[32] = "";
-    sprintf(str, "%d", screen);
-    fileName.append(str);
-    fileName.append(".jpg");
-    pixmap.save(fileName);
+    pixMap = pScreen->grabWindow(pDesktop->winId(), rect.x(), rect.y(), rect.width(), rect.height());
+}
+
+void ScreenWindow::paintEvent(QPaintEvent *e) {
+    QPainter painter(this);
+    painter.drawPixmap(0, 0, pixMap);
 }
