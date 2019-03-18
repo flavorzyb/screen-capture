@@ -15,8 +15,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      mainWidget(nullptr),
-      btnCapture(nullptr)
+      mainWidget(Q_NULLPTR),
+      btnCapture(Q_NULLPTR)
 {
     initUI();
     addEvents();
