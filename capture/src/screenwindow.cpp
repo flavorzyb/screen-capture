@@ -37,12 +37,12 @@ void ScreenWindow::initUI(int screen)
 
     QScreen * pScreen = QGuiApplication::primaryScreen();
     pixMap = pScreen->grabWindow(pDesktop->winId(), rect.x(), rect.y(), rect.width(), rect.height());
-    QString fileName = "/Users/flavor/tmp/screen_";
-    char str[32] = "";
-    sprintf(str, "%d", screen);
-    fileName.append(str);
-    fileName.append(".jpg");
-    pixMap.save(fileName);
+//    QString fileName = "/Users/flavor/tmp/screen_";
+//    char str[32] = "";
+//    sprintf(str, "%d", screen);
+//    fileName.append(str);
+//    fileName.append(".jpg");
+//    pixMap.save(fileName);
 
     pAction = new QAction(this);
     pAction->setShortcut(QKeySequence(Qt::Key_Escape));
