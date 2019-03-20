@@ -31,18 +31,22 @@ ScreenWindow::~ScreenWindow()
 void ScreenWindow::initUI(int screen)
 {
     QDesktopWidget *pDesktop = QApplication::desktop();
-    QRect rect = pDesktop->screenGeometry(screen);
+    rect = pDesktop->screenGeometry(screen);
     setMinimumSize(rect.width(), rect.height());
     setGeometry(rect);
 
+    printf("rect.width===%d, rect.height=====%d\n", rect.width(), rect.height());
+
     QScreen * pScreen = QGuiApplication::primaryScreen();
-    pixMap = pScreen->grabWindow(pDesktop->winId(), rect.x(), rect.y(), rect.width(), rect.height());
-//    QString fileName = "/Users/flavor/tmp/screen_";
-//    char str[32] = "";
-//    sprintf(str, "%d", screen);
-//    fileName.append(str);
-//    fileName.append(".jpg");
-//    pixMap.save(fileName);
+    pixMap = pScreen->grabWindow(pDesktop->winId(), rect.x(), rect.y(), rect.width() , rect.height());
+    printf("rect.x====%d, rect.y=====%d, pScreen.devicePixelRatio===%f, pixMap.width=====%d, pixMap.height=======%d\n", rect.x(), rect.y(), pScreen->devicePixelRatio(), pixMap.width(), pixMap.height());
+    //pixMap = pixMap.scaled(rect.width(), rect.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation);
+    QString fileName = "/Users/flavor/tmp/screen_";
+    char str[32] = "";
+    sprintf(str, "%d", screen);
+    fileName.append(str);
+    fileName.append(".png");
+    pixMap.save(fileName, "png", 100);
 
     pAction = new QAction(this);
     pAction->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -51,7 +55,8 @@ void ScreenWindow::initUI(int screen)
 
 void ScreenWindow::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
-    painter.drawPixmap(0, 0, pixMap);
+
+    painter.drawPixmap(0, 0, rect.width() , rect.height(), pixMap);
 }
 
 void ScreenWindow::addEvents() {

@@ -5,6 +5,7 @@
 #include <QPixmap>
 #include <QPaintEvent>
 #include <QAction>
+#include <QRect>
 
 class ScreenWindow: public QWidget
 {
@@ -24,6 +25,7 @@ private slots:
 private:
     QPixmap pixMap;
     QAction *pAction = Q_NULLPTR;
+    QRect rect;
 };
 
 #endif // SCREENWINDOW_H

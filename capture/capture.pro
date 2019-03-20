@@ -37,3 +37,8 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+macx {
+    ICON = $$PWD/resources/icon/pg.icns
+    QMAKE_INFO_PLIST = $$PWD/resources/Info.plist
+}

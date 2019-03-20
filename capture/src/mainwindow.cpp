@@ -65,6 +65,10 @@ void MainWindow::onClickCapture() {
     QDesktopWidget * desktop = QApplication::desktop();
     for (int i = 0; i< desktop->screenCount(); i++) {
         ScreenWindow * chidWin = new ScreenWindow(i);
-        chidWin->showFullScreen();
+        chidWin->setWindowFlag(Qt::FramelessWindowHint, true);
+        chidWin->setWindowModality(Qt::ApplicationModal);
+        chidWin->setAttribute(Qt::WA_TranslucentBackground, true);
+        //chidWin->setWindowState(Qt::WindowFullScreen);
+        chidWin->showMaximized();
     }
 }
