@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QAction>
+#include <QPixmap>
 
 class MainWindow : public QMainWindow
 {
@@ -26,6 +27,7 @@ private:
     QWidget *mainWidget = Q_NULLPTR;
     QPushButton * btnCapture = Q_NULLPTR;
     QAction * action = Q_NULLPTR;
+    QPixmap screenPixMap;
 };
 
 #endif // MAINWINDOW_H

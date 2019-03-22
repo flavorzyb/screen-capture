@@ -62,13 +62,16 @@ void MainWindow::removeEvents() {
 }
 
 void MainWindow::onClickCapture() {
-    QDesktopWidget * desktop = QApplication::desktop();
-    for (int i = 0; i< desktop->screenCount(); i++) {
-        ScreenWindow * chidWin = new ScreenWindow(i);
+    QDesktopWidget * pDesktop = QApplication::desktop();
+    QScreen * pScreen = QGuiApplication::primaryScreen();
+    screenPixMap = pScreen->grabWindow(pDesktop->winId(), 0, 0, pDesktop->width(), pDesktop->height());
+    for (int i = 0; i< pDesktop->screenCount(); i++) {
+        ScreenWindow * chidWin = new ScreenWindow(i, &screenPixMap);
         chidWin->setWindowFlag(Qt::FramelessWindowHint, true);
         chidWin->setWindowModality(Qt::ApplicationModal);
         chidWin->setAttribute(Qt::WA_TranslucentBackground, true);
-        //chidWin->setWindowState(Qt::WindowFullScreen);
-        chidWin->showMaximized();
+        chidWin->show();
+//        chidWin->showFullScreen();
+//        chidWin->showMaximized();
     }
 }

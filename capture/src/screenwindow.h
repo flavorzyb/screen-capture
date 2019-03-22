@@ -10,7 +10,7 @@
 class ScreenWindow: public QWidget
 {
 public:
-    ScreenWindow(int screen, QWidget *parent = Q_NULLPTR);
+    ScreenWindow(int screen, QPixmap *pixMap = Q_NULLPTR);
     ~ScreenWindow();
     void paintEvent(QPaintEvent *e);
 
@@ -23,7 +23,8 @@ private slots:
     void onPressEsc();
 
 private:
-    QPixmap pixMap;
+    QPixmap *desktopPixMap = Q_NULLPTR;
+    QPixmap screenPixMap;
     QAction *pAction = Q_NULLPTR;
     QRect rect;
 };
