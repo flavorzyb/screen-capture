@@ -1,4 +1,3 @@
-#include <QDesktopWidget>
 #include <QApplication>
 #include <QGuiApplication>
 #include <QScreen>
@@ -7,19 +6,13 @@
 #include "screenwindow.h"
 
 
-ScreenWindow::ScreenWindow(int screen, QPixmap *pixMap):
+ScreenWindow::ScreenWindow(QScreen * screen, QPixmap *pixMap):
     QWidget (Q_NULLPTR),
     desktopPixMap(pixMap),
-    pAction(Q_NULLPTR)
+    pAction(Q_NULLPTR),
+    pScreen(screen)
 {
-    QDesktopWidget *pDesktop = QApplication::desktop();
-    if (screen < 0) {
-        screen = 0;
-    } else if (screen >= pDesktop->screenCount()) {
-        screen = pDesktop->screenCount() - 1;
-    }
-
-    initUI(screen);
+    initUI();
     addEvents();
 }
 
@@ -28,21 +21,25 @@ ScreenWindow::~ScreenWindow()
     removeEvents();
 }
 
-void ScreenWindow::initUI(int screen)
+void ScreenWindow::initUI()
 {
-    QDesktopWidget *pDesktop = QApplication::desktop();
-    rect = pDesktop->screenGeometry(screen);
-    setMinimumSize(rect.width(), rect.height());
-    setGeometry(rect);
+    if (pScreen == Q_NULLPTR) {
+        pScreen = QGuiApplication::primaryScreen();
+    }
 
-    screenPixMap = desktopPixMap->copy(rect.x() * 2, rect.y() * 2, rect.width() * 2, rect.height() * 2);
-//    printf("rect.x====%d, rect.y=====%d, pScreen.devicePixelRatio===%f, pixMap.width=====%d, pixMap.height=======%d\n", rect.x(), rect.y(), pScreen->devicePixelRatio(), pixMap.width(), pixMap.height());
-//    QString fileName = "/Users/flavor/tmp/screen_";
-//    char str[32] = "";
-//    sprintf(str, "%d", screen);
-//    fileName.append(str);
-//    fileName.append(".png");
-//    pixMap.save(fileName, "png", 100);
+    if (pScreen != Q_NULLPTR) {
+        rect = pScreen->availableGeometry();
+        setMinimumSize(rect.width(), rect.height());
+        setGeometry(rect);
+
+        int ratio = int(pScreen->devicePixelRatio());
+        screenPixMap = desktopPixMap->copy(rect.x() * ratio, rect.y() * ratio, rect.width() * ratio, rect.height() * ratio);
+//        QString fileName = "/Users/flavor/tmp/screen_";
+//        char str[32] = "";
+//        fileName.append(str);
+//        fileName.append(".png");
+//        screenPixMap.save(fileName, "png", 100);
+    }
 
     pAction = new QAction(this);
     pAction->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -51,7 +48,9 @@ void ScreenWindow::initUI(int screen)
 
 void ScreenWindow::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
-    painter.drawPixmap(0, 0, rect.width() , rect.height(), screenPixMap);
+    if (pScreen != Q_NULLPTR) {
+        painter.drawPixmap(0, 0, rect.width() , rect.height(), screenPixMap);
+    }
 }
 
 void ScreenWindow::addEvents() {
@@ -60,7 +59,6 @@ void ScreenWindow::addEvents() {
 
 void ScreenWindow::removeEvents() {
     disconnect(pAction, &QAction::triggered, this, &ScreenWindow::onPressEsc);
-    printf("ScreenWindow::removeEvents======\n");
 }
 
 void ScreenWindow::onPressEsc() {

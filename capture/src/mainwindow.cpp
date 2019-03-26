@@ -8,6 +8,7 @@
 #include <QClipboard>
 #include <QMessageBox>
 #include <QKeySequence>
+#include <QGuiApplication>
 #include <QScreen>
 #include <QList>
 #include "mainwindow.h"
@@ -65,8 +66,9 @@ void MainWindow::onClickCapture() {
     QDesktopWidget * pDesktop = QApplication::desktop();
     QScreen * pScreen = QGuiApplication::primaryScreen();
     screenPixMap = pScreen->grabWindow(pDesktop->winId(), 0, 0, pDesktop->width(), pDesktop->height());
-    for (int i = 0; i< pDesktop->screenCount(); i++) {
-        ScreenWindow * chidWin = new ScreenWindow(i, &screenPixMap);
+    QList<QScreen *> result = QGuiApplication::screens();
+    for (QList<QScreen *>::const_iterator it = result.constBegin(); it != result.constEnd(); ++it) {
+        ScreenWindow * chidWin = new ScreenWindow(*it, &screenPixMap);
         chidWin->setWindowFlag(Qt::FramelessWindowHint, true);
         chidWin->setWindowModality(Qt::ApplicationModal);
         chidWin->setAttribute(Qt::WA_TranslucentBackground, true);
